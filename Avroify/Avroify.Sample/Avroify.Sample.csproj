@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Avroify.Sample</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Avroify\Avroify.csproj"
+                          OutputItemType="Analyzer"
+                          ReferenceOutputAssembly="false"  />
+        
+        <ProjectReference Include="..\Avroify.Attributes\Avroify.Attributes.csproj"
+                          OutputItemType="Analyzer"
+                          ReferenceOutputAssembly="true"  />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Sample.avcs" />
+      <AdditionalFiles Include="Sample.avcs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Apache.Avro" Version="1.11.3" />
+    </ItemGroup>
+
+</Project>

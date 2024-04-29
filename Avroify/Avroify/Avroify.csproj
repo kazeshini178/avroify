@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <IsPackable>false</IsPackable>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <IsRoslynComponent>true</IsRoslynComponent>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+
+        <RootNamespace>Avroify</RootNamespace>
+        <PackageId>Avroify</PackageId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Avroify.Attributes\Avroify.Attributes.csproj" PrivateAssets="All"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- Generator dependencies -->
+        <PackageReference Include="Apache.Avro" Version="1.11.3" PrivateAssets="all" GeneratePathProperty="true"/>
+        <PackageReference Include="System.CodeDom" Version="7.0.0" PrivateAssets="all" GeneratePathProperty="true"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" PrivateAssets="all" GeneratePathProperty="true"/>
+    </ItemGroup>
+
+    <!-- https://andrewlock.net/creating-a-source-generator-part-8-solving-the-source-generator-marker-attribute-problem-part2/ -->
+    <ItemGroup>
+        <!-- Pack the generator dll in the analyzers/dotnet/cs path -->
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
+
+        <!-- Pack the attributes dll in the analyzers/dotnet/cs path -->
+        <None Include="$(OutputPath)\Avroify.Attributes.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
+
+        <!-- Pack the attributes dll in the lib\netstandard2.0 path -->
+        <None Include="$(OutputPath)\Avroify.Attributes.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
+    </PropertyGroup>
+
+    <Target Name="GetDependencyTargetPaths">
+        <ItemGroup>
+            <TargetPathWithTargetPlatformMoniker Include="$(PkgApache_Avro)\lib\netstandard2.0\Avro.dll" IncludeRuntimeDependency="false"/>
+            <TargetPathWithTargetPlatformMoniker Include="$(PkgSystem_CodeDom)\lib\netstandard2.0\System.CodeDom.dll" IncludeRuntimeDependency="false"/>
+            <TargetPathWithTargetPlatformMoniker Include="$(PkgNewtonsoft_Json)\lib\netstandard2.0\Newtonsoft.Json.dll" IncludeRuntimeDependency="false"/>
+        </ItemGroup>
+    </Target> 
+
+</Project>

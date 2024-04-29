@@ -1,0 +1,170 @@
+{
+  "name": "NonBusinessPartnerPurposeAvro",
+  "namespace": "Avroify.Sample.Models",
+  "type": "record",
+  "fields": [
+    {
+      "name": "NonbusinessPartnerId",
+      "type": "long"
+    },
+    {
+      "name": "NonbusinessPartnerAuditStat",
+      "type": "int"
+    },
+    {
+      "name": "NonbusinessPartnerName",
+      "type": [ "null", "string" ]
+    },
+    {
+      "name": "NonbusinessPartnerType",
+      "type": {
+        "type": "enum",
+        "name": "PartnerTypeAvro",
+        "namespace": "Avroify.Sample.Enums",
+        "symbols": [ "CustomsAuthority", "PortAuthority", "CustomsBroker" ]
+      }
+    },
+    {
+      "name": "CountryCode",
+      "type": [ "null", "string" ]
+    },
+    {
+      "name": "PortCodes",
+      "type": {
+        "type": "array",
+        "items": "string"
+      }
+    },
+    {
+      "name": "ContactPurposeId",
+      "type": "long"
+    },
+    {
+      "name": "ContactPurposeAuditStat",
+      "type": "int"
+    },
+    {
+      "name": "PurposeType",
+      "type": "string"
+    },
+    {
+      "name": "SubPurposeType",
+      "type": "string"
+    },
+    {
+      "name": "CommsType",
+      "type": {
+        "type": "enum",
+        "name": "CommunicationTypeAvro",
+        "namespace": "Avroify.Sample.Enums",
+        "symbols": [ "Email", "API", "FTP" ]
+      }
+    },
+    {
+      "name": "FileConfigurations",
+      "type": [
+        "null",
+        {
+          "type": "array",
+          "items": {
+            "name": "FileConfigurationAvro",
+            "namespace": "Avroify.Sample.Models",
+            "type": "record",
+            "fields": [
+              {
+                "name": "Type",
+                "type": "string"
+              },
+              {
+                "name": "ExportAs",
+                "type": [ "null", "string" ]
+              },
+              {
+                "name": "SenderId",
+                "type": [ "null", "string" ]
+              },
+              {
+                "name": "SenderName",
+                "type": [ "null", "string" ]
+              },
+              {
+                "name": "ReceiverId",
+                "type": [ "null", "string" ]
+              },
+              {
+                "name": "CallReference",
+                "type": [ "null", "string" ]
+              },
+              {
+                "name": "IsForDischarge",
+                "type": "boolean"
+              },
+              {
+                "name": "SplitAs",
+                "type": [ "null", "string" ]
+              },
+              {
+                "name": "FilterContainerType",
+                "type": {
+                  "type": "array",
+                  "items": "string"
+                }
+              },
+              {
+                "name": "FilterCustomUnionStatus",
+                "type": {
+                  "type": "array",
+                  "items": "string"
+                }
+              },
+              {
+                "name": "FilterWebuyAccounts",
+                "type": {
+                  "type": "array",
+                  "items": "string"
+                }
+              },
+              {
+                "name": "WebuyHideAccountNames",
+                "type": "boolean"
+              },
+              {
+                "name": "FilterWesellAccounts",
+                "type": {
+                  "type": "array",
+                  "items": "string"
+                }
+              },
+              {
+                "name": "WesellHideAccountNames",
+                "type": "boolean"
+              },
+              {
+                "name": "FilterMapping",
+                "type": [ "null", "string" ]
+              },
+              {
+                "name": "FilterHideAccountNames",
+                "type": "boolean"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Emails",
+      "type": {
+        "type": "array",
+        "items": "string"
+      }
+    },
+    {
+      "name": "CCEmails",
+      "type": {
+        "type": "array",
+        "items": "string"
+      }
+    }
+  ]
+}
