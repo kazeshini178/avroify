@@ -1,7 +1,8 @@
+using Avroify.Internals;
+
 namespace Avroify;
 
-internal class GenerationOutput(string name, string source)
-{
-    internal string Name { get; } = name;
-    internal string Source { get; } = source;
-}
+internal record struct GenerationOutput(string Name, string Source);
+
+internal record struct AvcsGenerationResult(string FileName, EquatableArray<GenerationOutput> Outputs);
+internal record struct AvcsFileInfo(string FileName, string Content);

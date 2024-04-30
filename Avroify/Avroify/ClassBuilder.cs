@@ -5,10 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using Avro;
+using Avroify.Internals;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
 
 namespace Avroify;
 
@@ -17,31 +16,27 @@ internal class ClassBuilder
     private const string AvroSchemaExtension = ".avcs";
     private const string Delimiter = "//-------------------";
 
-    private CodeGen _avroCodeGen = new();
-
     internal bool IsAvroSchemaFile(AdditionalText file)
     {
         return Path.GetFileName(file.Path).EndsWith(AvroSchemaExtension);
     }
 
-    internal SourceText RegisterSchema(SourceText avroText)
+    internal AvcsFileInfo GetFileInfo(AdditionalText file)
     {
-        var text = avroText.ToString();
-        if (string.IsNullOrWhiteSpace(text))
-            return avroText;
-
-        _avroCodeGen.AddSchema(text);
-        return avroText;
+        var fileText = file.GetText()?.ToString() ?? string.Empty;
+        return new AvcsFileInfo(file.Path, fileText);
     }
 
-    internal List<GenerationOutput> GenerateAvroClass(CancellationToken token = default)
+    internal AvcsGenerationResult TransformAvcsFile(AvcsFileInfo file)
     {
-        var codeUnit = _avroCodeGen.GenerateCode();
+        CodeGen codeGen = new();
+        codeGen.AddSchema(file.Content);
+        var codeUnit = codeGen.GenerateCode();
         var generatedClasses = GenerateCodeOutput(codeUnit);
-        return generatedClasses;
+        return new AvcsGenerationResult(file.FileName, new EquatableArray<GenerationOutput>(generatedClasses));
     }
 
-    private List<GenerationOutput> GenerateCodeOutput(CodeCompileUnit compileUnit)
+    private GenerationOutput[] GenerateCodeOutput(CodeCompileUnit compileUnit)
     {
         var positionalNames = new List<string>();
         var generatorOptions = new CodeGeneratorOptions()
@@ -84,6 +79,6 @@ internal class ClassBuilder
 
         return generatedCode.Split([Delimiter], StringSplitOptions.RemoveEmptyEntries)
             .Select((code, index) => new GenerationOutput(positionalNames[index], code))
-            .ToList();
+            .ToArray();
     }
 }
