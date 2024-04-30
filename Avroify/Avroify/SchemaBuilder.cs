@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Avro;
-using Avro.Util;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json.Linq;
@@ -12,8 +11,7 @@ namespace Avroify;
 internal class SchemaBuilder
 {
     internal SchemaBuilder()
-    {
-    }
+    { }
 
     internal Schema GenerateSchemaForClass(INamedTypeSymbol classSymbol, List<IPropertySymbol> properties,
         CancellationToken token)
