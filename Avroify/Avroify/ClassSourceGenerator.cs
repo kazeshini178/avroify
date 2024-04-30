@@ -11,7 +11,8 @@ namespace Avroify;
 [Generator]
 public class ClassSourceGenerator : IIncrementalGenerator
 {
-    private readonly bool _isTextContext;
+    private readonly bool _isTestContext;
+    private readonly SchemaBuilder _schemaBuilder = new();
 
     // TODO: Split to descriptor class
     private static readonly DiagnosticDescriptor Descriptor = new("A00001", "Generation Failure",
@@ -30,18 +31,16 @@ namespace Avroify
     }
 }";
 
-    private SchemaBuilder _schemaBuilder = new();
-
     public ClassSourceGenerator() { }
     // Dont really like this but couldnt figure out why test wouldnt use marker attribute
-    public ClassSourceGenerator(bool isTextContext)
+    public ClassSourceGenerator(bool isTestContext)
     {
-        _isTextContext = isTextContext;
+        _isTestContext = isTestContext;
     }
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     { 
-        if(_isTextContext)
+        if(_isTestContext)
         {
             context.RegisterPostInitializationOutput(ctx => ctx.AddSource(
                 "AvroifyAttribute.g.cs",
@@ -50,7 +49,7 @@ namespace Avroify
         
         var attributeGeneration = context.SyntaxProvider.ForAttributeWithMetadataName(
                 "Avroify.AvroifyAttribute",
-                (node, token) => node is ClassDeclarationSyntax,
+                (node, _) => node is ClassDeclarationSyntax,
                 CreateAvroDetails
             )
             .Where(c => c is not null)
@@ -62,13 +61,13 @@ namespace Avroify
             if (s is null) return;
             try
             {
-                var file = CreateAvroRecordPartial(s);
-                productionContext.AddSource($"{s.Name}.g.cs", file);
+                var file = CreateAvroRecordPartial(s.Value);
+                productionContext.AddSource($"{s.Value.Name}.g.cs", file);
             }
             catch (Exception e)
             {
                 productionContext.ReportDiagnostic(
-                    Diagnostic.Create(Descriptor, null, s.Name, e.Message));
+                    Diagnostic.Create(Descriptor, null, s.Value.Name, e.Message));
             }
         });
     }
