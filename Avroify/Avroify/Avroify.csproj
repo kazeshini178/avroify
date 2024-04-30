@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <IsPackable>false</IsPackable>
+        <IsPackable>true</IsPackable>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
 
@@ -12,6 +12,9 @@
 
         <RootNamespace>Avroify</RootNamespace>
         <PackageId>Avroify</PackageId>
+        <Description>Generator Avro Models from AVCS schema files or extend you existing models to be used for Avro  </Description>
+        <RepositoryUrl>https://github.com/kazeshini178/avroify</RepositoryUrl>
+        <RepositoryType>Source Generator</RepositoryType>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,8 +22,8 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0"/>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.2"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.9.2"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -30,7 +33,7 @@
     <ItemGroup>
         <!-- Generator dependencies -->
         <PackageReference Include="Apache.Avro" Version="1.11.3" PrivateAssets="all" GeneratePathProperty="true"/>
-        <PackageReference Include="System.CodeDom" Version="7.0.0" PrivateAssets="all" GeneratePathProperty="true"/>
+        <PackageReference Include="System.CodeDom" Version="7.0.0" PrivateAssets="all" GeneratePathProperty="true" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" PrivateAssets="all" GeneratePathProperty="true"/>
     </ItemGroup>
 
