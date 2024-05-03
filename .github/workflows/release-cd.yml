@@ -25,4 +25,4 @@ jobs:
     - name: Pack Nuget
       run: dotnet pack ./Avroify/Avroify/Avroify.csproj --no-build -o ./dist
     - name: Publish package
-      run: dotnet nuget push ./dist --api-key ${{ secrets.NUGET_API_KEY }}
+      run: dotnet nuget push --source ./dist --api-key ${{ secrets.NUGET_API_KEY }}
