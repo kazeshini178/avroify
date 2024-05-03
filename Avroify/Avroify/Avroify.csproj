@@ -15,6 +15,7 @@
         <Description>Generator Avro Models from AVCS schema files or extend you existing models to be used for Avro  </Description>
         <RepositoryUrl>https://github.com/kazeshini178/avroify</RepositoryUrl>
         <RepositoryType>Source Generator</RepositoryType>
+        <PackageTags>Source Generator; Avro;</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
