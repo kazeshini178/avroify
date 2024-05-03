@@ -22,9 +22,18 @@ public partial class AllBaseTypes
     public DateTime DateTimeType { get; set; }
     public DateOnly DateType { get; set; }
     public TimeOnly TimeType { get; set; }
+    public SimpleEnum EnumType { get; set; }
 }
 
+[Avroify]
 public partial class NestedClass
 {
     public string NextStringType { get; set; }
-} 
+}
+
+public enum SimpleEnum
+{
+     Active,
+     Inactive,
+     Deleted
+}

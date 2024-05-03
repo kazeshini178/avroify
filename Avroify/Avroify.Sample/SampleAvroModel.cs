@@ -17,13 +17,8 @@ namespace Avroify.Sample
         public string ColoursFlattened
         {
             get => string.Join(',', Colours);
-        }  
+        } 
         
-        public NonBusinessPartnerPurposeAvro? PartnerTypeAvro
-        {
-            get { return null; }
-        }
-
         public List<string> Colours { get; set; }
         public int Age { get; set; } = 18;
         public int? Money { get; set; }
