@@ -16,7 +16,13 @@
         <RepositoryUrl>https://github.com/kazeshini178/avroify</RepositoryUrl>
         <RepositoryType>Source Generator</RepositoryType>
         <PackageTags>Source Generator; Avro;</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     </PropertyGroup>
+    <ItemGroup> 
+        <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+        <None Include="..\..\LICENSE.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
