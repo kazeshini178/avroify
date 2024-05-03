@@ -5,6 +5,7 @@ name: Package Release
 
 on:
   release:
+  workflow_dispatch:
 
 jobs:
   build:
