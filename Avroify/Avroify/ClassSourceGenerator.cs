@@ -139,9 +139,33 @@ public partial class {details.Name} : global::Avro.Specific.ISpecificRecord
         for (var index = 0; index < properties.Count; index++)
         {
             var property = properties[index];
-            getStringBuilder.AppendLine($"\t\t\tcase {index}: return this.{property.Name};");
-            setStringBuilder.AppendLine(
-                $"\t\t\tcase {index}: this.{property.Name} = ({property.SetMethod!.Parameters[0].Type.ToDisplayString()})fieldValue; break;");
+            var typeString = property.SetMethod!.Parameters[0].Type.ToDisplayString();
+            getStringBuilder.Append($"\t\t\tcase {index}: return ");
+            setStringBuilder.Append(
+                $"\t\t\tcase {index}: this.{property.Name} = ");
+            switch (typeString.ToLower())
+            {
+                case "char" or "short":
+                    getStringBuilder.AppendLine($"(int) this.{property.Name};");
+                    setStringBuilder.AppendLine($"({typeString})fieldValue; break;");
+                    break;
+                case "decimal":
+                    getStringBuilder.AppendLine($"(Avro.AvroDecimal) this.{property.Name};");
+                    setStringBuilder.AppendLine($"({typeString})(Avro.AvroDecimal)fieldValue; break;");
+                    break;
+                case "dateonly":
+                    getStringBuilder.AppendLine($"this.{property.Name}.ToDateTime(TimeOnly.MinValue);");
+                    setStringBuilder.AppendLine("DateOnly.FromDateTime((DateTime)fieldValue); break;");
+                    break;
+                case "timeonly":
+                    getStringBuilder.AppendLine($"this.{property.Name}.ToTimeSpan();");
+                    setStringBuilder.AppendLine("TimeOnly.FromTimeSpan((TimeSpan)fieldValue); break;");
+                    break;
+                default:
+                    getStringBuilder.AppendLine($"this.{property.Name};");
+                    setStringBuilder.AppendLine($"({typeString})fieldValue; break;");
+                    break;
+            }
         }
 
         var schema = _schemaBuilder.GenerateSchemaForClass(classSymbol, properties, token);
