@@ -386,20 +386,20 @@ public partial class AllBaseTypes : global::Avro.Specific.ISpecificRecord
 		  switch (fieldPos)
 		  {
 			    case 0: return this.StringType;
-          case 1: return this.CharType;
-          case 2: return this.ShortType;
+          case 1: return (int) this.CharType;
+          case 2: return (int) this.ShortType;
           case 3: return this.IntType;
           case 4: return this.LongType;
           case 5: return this.FloatType;
           case 6: return this.DoubleType;
-          case 7: return this.DecimalType;
+          case 7: return (Avro.AvroDecimal) this.DecimalType;
           case 8: return this.ArrayType;
           case 9: return this.ListType;
           case 10: return this.MapType;
           case 11: return this.ComplexType;
           case 12: return this.DateTimeType;
-          case 13: return this.DateType;
-          case 14: return this.TimeType;
+          case 13: return this.DateType.ToDateTime(TimeOnly.MinValue);
+          case 14: return this.TimeType.ToTimeSpan();
 
 			    default: throw new global::Avro.AvroRuntimeException(""Bad index "" + fieldPos + "" in Get()"");
 		  }
@@ -416,14 +416,14 @@ public partial class AllBaseTypes : global::Avro.Specific.ISpecificRecord
           case 4: this.LongType = (long)fieldValue; break;
           case 5: this.FloatType = (float)fieldValue; break;
           case 6: this.DoubleType = (double)fieldValue; break;
-          case 7: this.DecimalType = (decimal)fieldValue; break;
+          case 7: this.DecimalType = (decimal)(Avro.AvroDecimal)fieldValue; break;
           case 8: this.ArrayType = (int[])fieldValue; break;
           case 9: this.ListType = (System.Collections.Generic.List<Avroify.Sample.NestedClass>)fieldValue; break;
           case 10: this.MapType = (System.Collections.Generic.Dictionary<string, Avroify.Sample.NestedClass>)fieldValue; break;
           case 11: this.ComplexType = (Avroify.Sample.NestedClass)fieldValue; break;
           case 12: this.DateTimeType = (DateTime)fieldValue; break;
-          case 13: this.DateType = (DateOnly)fieldValue; break;
-          case 14: this.TimeType = (TimeOnly)fieldValue; break;
+          case 13: this.DateType = DateOnly.FromDateTime((DateTime)fieldValue); break;
+          case 14: this.TimeType = TimeOnly.FromTimeSpan((TimeSpan)fieldValue); break;
 
 			    default: throw new global::Avro.AvroRuntimeException(""Bad index "" + fieldPos + "" in Put()"");
 		  }
