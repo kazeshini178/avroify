@@ -62,43 +62,74 @@ namespace Avroify.Sample
         Assert.Contains(results.Diagnostics, d => d.GetMessage() == obj.DiagnosticResultMessage);
     }
     
-    private const string ValidClass = $@"using System.Collections.Generic;
+    private const string IntKeyDictionaryClass = @"using System.Collections.Generic;
+
+namespace Avroify.Sample;
+
+[Avroify]
+public partial class DictionaryAvro
+{
+    public Dictionary<int, List<string>> MapType { get; set; }
+}
+";
+    [Fact]
+    public void Given_NonString_Key_Dictionary_Property_Report_Error_AVROIFY00003()
+    {
+        var generator = new SourceGenerator(true);
+
+        var driver = CSharpGeneratorDriver.Create(generator);
+
+        var compilation = CSharpCompilation.Create(nameof(SourceGeneratorTests), new[]
+        {
+            CSharpSyntaxTree.ParseText(IntKeyDictionaryClass)
+        }, new[]
+        {
+            // To support 'System.Attribute' inheritance, add reference to 'System.Private.CoreLib'.
+            MetadataReference.CreateFromFile(typeof(object).Assembly.Location)
+        });
+
+        var results = driver.RunGenerators(compilation).GetRunResult();
+        Assert.False(results.Diagnostics.IsEmpty);
+        Assert.Contains(results.Diagnostics, d => d.Id == "AVROIFY00003");
+    }
+    
+    private const string ValidClass = @"using System.Collections.Generic;
 
 namespace Avroify.Sample;
 
 [Avroify]
 public partial class AllBaseTypes
-{{
-    public string StringType {{ get; set; }}
-    public char CharType {{ get; set; }}
-    public short ShortType {{ get; set; }}
-    public int IntType {{ get; set; }}
-    public long LongType {{ get; set; }}
-    public float FloatType {{ get; set; }}
-    public double DoubleType {{ get; set; }}
-    public decimal DecimalType {{ get; set; }}
-    public NestedClass[] ArrayType  {{ get; set; }}
-    public List<NestedClass> ListType {{ get; set; }}
-    public Dictionary<string, NestedClass> MapType {{ get; set; }}
-    public NestedClass ComplexType {{ get; set; }}
-    public DateTime DateTimeType {{ get; set; }}
-    public DateOnly DateType {{ get; set; }}
-    public TimeOnly TimeType {{ get; set; }}
-    public SimpleEnum EnumType {{ get; set; }}
-}}
+{
+    public string StringType { get; set; }
+    public char CharType { get; set; }
+    public short ShortType { get; set; }
+    public int IntType { get; set; }
+    public long LongType { get; set; }
+    public float FloatType { get; set; }
+    public double DoubleType { get; set; }
+    public decimal DecimalType { get; set; }
+    public NestedClass[] ArrayType  { get; set; }
+    public List<NestedClass> ListType { get; set; }
+    public Dictionary<string, NestedClass> MapType { get; set; }
+    public NestedClass ComplexType { get; set; }
+    public DateTime DateTimeType { get; set; }
+    public DateOnly DateType { get; set; }
+    public TimeOnly TimeType { get; set; }
+    public SimpleEnum EnumType { get; set; }
+}
 
 [Avroify]
 public partial class NestedClass
-{{
-    public string NextStringType {{ get; set; }}
-}}
+{
+    public string NextStringType { get; set; }
+}
 
 public enum SimpleEnum 
-{{
+{
     ValueOne,
     ValueTwo,
     ValueThree
-}}
+}
 ";
     
     [Fact]

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -142,9 +143,19 @@ internal class SchemaBuilder
         // TODO: Add Diagnostic to check users are using complex map keys
         // Currently unused on Avro map type
         var mapKeySymbol = (INamedTypeSymbol) mapSymbol.TypeArguments[0];
+        DiagnosticInfo? keyDiagnostic = null;
+        if (mapKeySymbol.Name != nameof(String))
+        {
+            keyDiagnostic = DictionaryKeyDiagnostic.Create(mapKeySymbol);
+        }
         var mapValueSymbol = (INamedTypeSymbol) mapSymbol.TypeArguments[1];
         var valueType = mapValueSymbol.Name;
         var (schema, diagnostics) = CreateSchemaForType(valueType, mapValueSymbol);
+        if (keyDiagnostic is not null)
+        {
+            diagnostics ??= [];
+            diagnostics.Add(keyDiagnostic);
+        }
         return (MapSchema.CreateMap(schema), diagnostics);
     }
 
