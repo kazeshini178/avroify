@@ -24,7 +24,8 @@ namespace Avroify.Sample
         public int? Money { get; set; }
     }
 
-    public class BasicModel
+    [Avroify]
+    public partial class BasicModel
     {
         public int Id { get; set; }
         // public string Avroname { get; set; }

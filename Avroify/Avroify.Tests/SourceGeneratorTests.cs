@@ -6,7 +6,7 @@ using Avroify.Tests.Utils;
 
 namespace Avroify.Tests;
 
-public class ClassSourceGeneratorTests
+public class SourceGeneratorTests
 {
     private const string CSharpClass = @"using Avroify;
 using System.Collections.Generic;
@@ -63,7 +63,7 @@ using global::Avro.Specific;
 
 namespace Avroify.Sample;
 
-[global::System.CodeDom.Compiler.GeneratedCodeAttribute(""Avroify"", ""1.0.0"")]
+[global::System.CodeDom.Compiler.GeneratedCodeAttribute(""Avroify"", ""1.0.1-beta.4"")]
 public partial class SampleAvroModel : global::Avro.Specific.ISpecificRecord
 {
 	public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(""{\""type\"":\""record\"",\""name\"":\""SampleAvroModel\"",\""namespace\"":\""Avroify.Sample\"",\""fields\"":[{\""name\"":\""Name\"",\""type\"":\""string\""},{\""name\"":\""FontSize\"",\""default\"":\""Large\"",\""type\"":{\""type\"":\""enum\"",\""name\"":\""FontSizeEnum\"",\""namespace\"":\""Avroify.Sample.Enums\"",\""symbols\"":[\""Small\"",\""Medium\"",\""Large\""]}},{\""name\"":\""Basic\"",\""type\"":{\""type\"":\""record\"",\""name\"":\""BasicModel\"",\""namespace\"":\""Avroify.Sample\"",\""fields\"":[{\""name\"":\""Id\"",\""type\"":\""int\""},{\""name\"":\""Avroname\"",\""default\"":\""Bob\"",\""type\"":\""string\""},{\""name\"":\""IsDeleted\"",\""type\"":\""boolean\""}]}},{\""name\"":\""DateCreated\"",\""type\"":{\""type\"":\""long\"",\""logicalType\"":\""timestamp-millis\""}},{\""name\"":\""BasicList\"",\""type\"":{\""type\"":\""array\"",\""items\"":\""BasicModel\""}},{\""name\"":\""Colours\"",\""type\"":{\""type\"":\""array\"",\""items\"":\""string\""}},{\""name\"":\""Age\"",\""default\"":\""18\"",\""type\"":\""int\""},{\""name\"":\""Money\"",\""type\"":[\""null\"",\""int\""]}]}"");
@@ -114,11 +114,11 @@ public partial class SampleAvroModel : global::Avro.Specific.ISpecificRecord
     [Fact]
     public void Given_Class_With_Complex_Prop_and_Default_Values()
     {
-        var generator = new ClassSourceGenerator(true);
+        var generator = new SourceGenerator(true);
 
         var driver = CSharpGeneratorDriver.Create(generator);
 
-        var compilation = CSharpCompilation.Create(nameof(ClassSourceGeneratorTests), new[]
+        var compilation = CSharpCompilation.Create(nameof(SourceGeneratorTests), new[]
         {
             CSharpSyntaxTree.ParseText(CSharpClass)
         }, new[]
@@ -317,7 +317,7 @@ public partial class SampleAvroModel : global::Avro.Specific.ISpecificRecord
                 // new TestAdditionalFile("./PartnerPurposeAvro2.avcs", AvroSchema)
             ]);
 
-        var compilation = CSharpCompilation.Create(nameof(ClassSourceGeneratorTests));
+        var compilation = CSharpCompilation.Create(nameof(SourceGeneratorTests));
         var results = driver.RunGenerators(compilation).GetRunResult();
 
         Assert.Equal(4, results.GeneratedTrees.Count());
@@ -369,7 +369,7 @@ using global::Avro.Specific;
 
 namespace Avroify.Sample;
 
-[global::System.CodeDom.Compiler.GeneratedCodeAttribute(""Avroify"", ""1.0.0"")]
+[global::System.CodeDom.Compiler.GeneratedCodeAttribute(""Avroify"", ""1.0.1-beta.4"")]
 public partial class AllBaseTypes : global::Avro.Specific.ISpecificRecord
 {
   public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(""{\""type\"":\""record\"",\""name\"":\""AllBaseTypes\"",\""namespace\"":\""Avroify.Sample\"",\""fields\"":[{\""name\"":\""StringType\"",\""type\"":\""string\""},{\""name\"":\""CharType\"",\""type\"":\""int\""},{\""name\"":\""ShortType\"",\""type\"":\""int\""},{\""name\"":\""IntType\"",\""type\"":\""int\""},{\""name\"":\""LongType\"",\""type\"":\""long\""},{\""name\"":\""FloatType\"",\""type\"":\""float\""},{\""name\"":\""DoubleType\"",\""type\"":\""double\""},{\""name\"":\""DecimalType\"",\""type\"":{\""type\"":\""bytes\"",\""logicalType\"":\""decimal\"",\""precision\"":29,\""scale\"":14}},{\""name\"":\""ArrayType\"",\""type\"":{\""type\"":\""array\"",\""items\"":\""int\""}},{\""name\"":\""ListType\"",\""type\"":{\""type\"":\""array\"",\""items\"":{\""type\"":\""record\"",\""name\"":\""NestedClass\"",\""namespace\"":\""Avroify.Sample\"",\""fields\"":[{\""name\"":\""NextStringType\"",\""type\"":\""string\""}]}}},{\""name\"":\""MapType\"",\""type\"":{\""type\"":\""map\"",\""values\"":\""NestedClass\""}},{\""name\"":\""ComplexType\"",\""type\"":\""NestedClass\""},{\""name\"":\""DateTimeType\"",\""type\"":{\""type\"":\""long\"",\""logicalType\"":\""timestamp-millis\""}},{\""name\"":\""DateType\"",\""type\"":{\""type\"":\""int\"",\""logicalType\"":\""date\""}},{\""name\"":\""TimeType\"",\""type\"":{\""type\"":\""int\"",\""logicalType\"":\""time-millis\""}}]}"");
@@ -434,11 +434,11 @@ public partial class AllBaseTypes : global::Avro.Specific.ISpecificRecord
     [Fact]
     public void Given_Class_With_Most_Common_Base_Types()
     {
-        var generator = new ClassSourceGenerator(true);
+        var generator = new SourceGenerator(true);
 
         var driver = CSharpGeneratorDriver.Create(generator);
 
-        var compilation = CSharpCompilation.Create(nameof(ClassSourceGeneratorTests), new[]
+        var compilation = CSharpCompilation.Create(nameof(SourceGeneratorTests), new[]
         {
             CSharpSyntaxTree.ParseText(CSharpClassAllBaseType)
         }, new[]
