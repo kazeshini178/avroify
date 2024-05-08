@@ -3,10 +3,10 @@ using Microsoft.CodeAnalysis;
 
 namespace Avroify.Diagnostics;
 
-internal static class NonAvroifiedClassDiagnostic
+internal static class UnmarkedClassDiagnostic
 {
     private const string Id = "AVROIFY00002";
-    private const string Title = "Class not Avroified";
+    private const string Title = "Class Not Avroified";
 
     private const string Message =
         "Class {0} referenced by property {1} does not support Avro Serialization/Deserialization.";

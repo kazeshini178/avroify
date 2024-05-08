@@ -6,7 +6,7 @@ namespace Avroify.Diagnostics;
 internal static class NonPartialClassDiagnostic
 {
     private const string Id = "AVROIFY00001";
-    private const string Title = "Not a partial class";
+    private const string Title = "Not A Partial Class";
     private const string Message = "Classes targeted by Avroify must be declared as partials to allow Avroify to extend them.";
 
     public static DiagnosticInfo Create(SyntaxNode node)

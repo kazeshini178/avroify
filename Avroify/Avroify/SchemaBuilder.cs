@@ -11,7 +11,7 @@ namespace Avroify;
 
 internal class SchemaBuilder
 {
-    private readonly string[] BaseTypes =
+    private readonly string[] _baseTypes =
     [
         "String", "Byte", "Char", "Int16", "Int32", "Int64", "Boolean", "Single", "Double", "Decimal", "DateTime",
         "DateOnly", "TimeOnly", "List", "Dictionary", "Nullable"
@@ -33,37 +33,7 @@ internal class SchemaBuilder
         {
             var property = properties[index];
 
-            if (property.Type.TypeKind != TypeKind.Enum)
-            {
-                if (property.Type is not IArrayTypeSymbol &&
-                    !IsSupportedBaseType(property.Type.Name))
-                {
-                    if (!property.Type.GetAttributes().Any(s => s.AttributeClass?.Name == nameof(AvroifyAttribute)))
-                    {
-                        diagnostics.Add(NonAvroifiedClassDiagnostic.Create(property, property.Type.Name));
-                    }
-                }
-                else if (property.Type is IArrayTypeSymbol arrayType &&
-                         !IsSupportedBaseType(arrayType.ElementType.Name))
-                {
-                    if (!arrayType.ElementType.GetAttributes()
-                            .Any(s => s.AttributeClass?.Name == nameof(AvroifyAttribute)))
-                    {
-                        diagnostics.Add(NonAvroifiedClassDiagnostic.Create(property, arrayType.ElementType.Name));
-                    }
-                }
-                else if (property.Type is INamedTypeSymbol {IsGenericType: true} namedSymbol)
-                {
-                    foreach (var typeArgument in namedSymbol.TypeArguments)
-                    {
-                        if (!IsSupportedBaseType(typeArgument.Name) &&
-                            !typeArgument.GetAttributes().Any(s => s.AttributeClass?.Name == nameof(AvroifyAttribute)))
-                        {
-                            diagnostics.Add(NonAvroifiedClassDiagnostic.Create(property, typeArgument.Name));
-                        }
-                    }
-                }
-            }
+            AddMarkedClassDiagnostics(property, diagnostics);
 
             var (fieldSchema, fieldDiagnostics) = CreateFieldSchema(property.Type);
             if (fieldDiagnostics is not null)
@@ -83,7 +53,39 @@ internal class SchemaBuilder
         );
     }
 
-    private bool IsSupportedBaseType(string typeName) => BaseTypes.Contains(typeName);
+    private void AddMarkedClassDiagnostics(IPropertySymbol property, List<DiagnosticInfo> diagnostics)
+    {
+        if (property.Type.TypeKind == TypeKind.Enum) return;
+
+        if (property.Type is IArrayTypeSymbol arrayType &&
+            !IsSupportedBaseType(arrayType.ElementType.Name) &&
+            !HasAvroifyAttribute(arrayType.ElementType))
+        {
+            diagnostics.Add(UnmarkedClassDiagnostic.Create(property, arrayType.ElementType.Name));
+            return;
+        }
+
+        if (property.Type is not IArrayTypeSymbol &&
+            !IsSupportedBaseType(property.Type.Name) &&
+            !HasAvroifyAttribute(property.Type))
+        {
+            diagnostics.Add(UnmarkedClassDiagnostic.Create(property, property.Type.Name));
+            return;
+        }
+
+        if (property.Type is not INamedTypeSymbol {IsGenericType: true} namedSymbol) return;
+        
+        foreach (var typeArgument in namedSymbol.TypeArguments)
+        {
+            if (IsSupportedBaseType(typeArgument.Name) || HasAvroifyAttribute(typeArgument)) continue;
+            diagnostics.Add(UnmarkedClassDiagnostic.Create(property, typeArgument.Name));
+        }
+    }
+
+    private static bool HasAvroifyAttribute(ITypeSymbol typeSymbol) =>
+        typeSymbol.GetAttributes().Any(s => s.AttributeClass?.Name == nameof(AvroifyAttribute));
+
+    private bool IsSupportedBaseType(string typeName) => _baseTypes.Contains(typeName);
 
     private JToken? GetPropertyDefaultValue(IPropertySymbol property)
     {
@@ -158,11 +160,11 @@ internal class SchemaBuilder
             "Boolean" => (PrimitiveSchema.Create(Schema.Type.Boolean), null),
             "Single" => (PrimitiveSchema.Create(Schema.Type.Float), null),
             "Double" => (PrimitiveSchema.Create(Schema.Type.Double), null),
-            "Decimal" => (LogicalSchema.Parse(
+            "Decimal" => (Schema.Parse(
                 "{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\": 29,\"scale\": 14}"), null),
-            "DateTime" => (LogicalSchema.Parse("{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}"), null),
-            "DateOnly" => (LogicalSchema.Parse("{\"type\":\"int\",\"logicalType\":\"date\"}"), null),
-            "TimeOnly" => (LogicalSchema.Parse("{\"type\":\"int\",\"logicalType\":\"time-millis\"}"), null),
+            "DateTime" => (Schema.Parse("{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}"), null),
+            "DateOnly" => (Schema.Parse("{\"type\":\"int\",\"logicalType\":\"date\"}"), null),
+            "TimeOnly" => (Schema.Parse("{\"type\":\"int\",\"logicalType\":\"time-millis\"}"), null),
             "List" => CreateListSchema(symbol),
             "Dictionary" => CreateMapSchema(symbol),
             "Nullable" => CreateNullUnionSchema(symbol),
