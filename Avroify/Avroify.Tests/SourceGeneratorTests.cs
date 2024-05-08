@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Xunit;
 using System.Linq;
+using Avroify.Internals;
 using Avroify.Tests.Utils;
 
 namespace Avroify.Tests;
@@ -63,7 +64,7 @@ using global::Avro.Specific;
 
 namespace Avroify.Sample;
 
-[global::System.CodeDom.Compiler.GeneratedCodeAttribute(""Avroify"", ""1.0.1-beta.4"")]
+[global::System.CodeDom.Compiler.GeneratedCodeAttribute(""Avroify"", """ + Constants.Version + @""")]
 public partial class SampleAvroModel : global::Avro.Specific.ISpecificRecord
 {
 	public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(""{\""type\"":\""record\"",\""name\"":\""SampleAvroModel\"",\""namespace\"":\""Avroify.Sample\"",\""fields\"":[{\""name\"":\""Name\"",\""type\"":\""string\""},{\""name\"":\""FontSize\"",\""default\"":\""Large\"",\""type\"":{\""type\"":\""enum\"",\""name\"":\""FontSizeEnum\"",\""namespace\"":\""Avroify.Sample.Enums\"",\""symbols\"":[\""Small\"",\""Medium\"",\""Large\""]}},{\""name\"":\""Basic\"",\""type\"":{\""type\"":\""record\"",\""name\"":\""BasicModel\"",\""namespace\"":\""Avroify.Sample\"",\""fields\"":[{\""name\"":\""Id\"",\""type\"":\""int\""},{\""name\"":\""Avroname\"",\""default\"":\""Bob\"",\""type\"":\""string\""},{\""name\"":\""IsDeleted\"",\""type\"":\""boolean\""}]}},{\""name\"":\""DateCreated\"",\""type\"":{\""type\"":\""long\"",\""logicalType\"":\""timestamp-millis\""}},{\""name\"":\""BasicList\"",\""type\"":{\""type\"":\""array\"",\""items\"":\""BasicModel\""}},{\""name\"":\""Colours\"",\""type\"":{\""type\"":\""array\"",\""items\"":\""string\""}},{\""name\"":\""Age\"",\""default\"":\""18\"",\""type\"":\""int\""},{\""name\"":\""Money\"",\""type\"":[\""null\"",\""int\""]}]}"");
@@ -369,7 +370,7 @@ using global::Avro.Specific;
 
 namespace Avroify.Sample;
 
-[global::System.CodeDom.Compiler.GeneratedCodeAttribute(""Avroify"", ""1.0.1-beta.4"")]
+[global::System.CodeDom.Compiler.GeneratedCodeAttribute(""Avroify"", """ + Constants.Version + @""")]
 public partial class AllBaseTypes : global::Avro.Specific.ISpecificRecord
 {
   public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(""{\""type\"":\""record\"",\""name\"":\""AllBaseTypes\"",\""namespace\"":\""Avroify.Sample\"",\""fields\"":[{\""name\"":\""StringType\"",\""type\"":\""string\""},{\""name\"":\""CharType\"",\""type\"":\""int\""},{\""name\"":\""ShortType\"",\""type\"":\""int\""},{\""name\"":\""IntType\"",\""type\"":\""int\""},{\""name\"":\""LongType\"",\""type\"":\""long\""},{\""name\"":\""FloatType\"",\""type\"":\""float\""},{\""name\"":\""DoubleType\"",\""type\"":\""double\""},{\""name\"":\""DecimalType\"",\""type\"":{\""type\"":\""bytes\"",\""logicalType\"":\""decimal\"",\""precision\"":29,\""scale\"":14}},{\""name\"":\""ArrayType\"",\""type\"":{\""type\"":\""array\"",\""items\"":\""int\""}},{\""name\"":\""ListType\"",\""type\"":{\""type\"":\""array\"",\""items\"":{\""type\"":\""record\"",\""name\"":\""NestedClass\"",\""namespace\"":\""Avroify.Sample\"",\""fields\"":[{\""name\"":\""NextStringType\"",\""type\"":\""string\""}]}}},{\""name\"":\""MapType\"",\""type\"":{\""type\"":\""map\"",\""values\"":\""NestedClass\""}},{\""name\"":\""ComplexType\"",\""type\"":\""NestedClass\""},{\""name\"":\""DateTimeType\"",\""type\"":{\""type\"":\""long\"",\""logicalType\"":\""timestamp-millis\""}},{\""name\"":\""DateType\"",\""type\"":{\""type\"":\""int\"",\""logicalType\"":\""date\""}},{\""name\"":\""TimeType\"",\""type\"":{\""type\"":\""int\"",\""logicalType\"":\""time-millis\""}}]}"");
@@ -410,14 +411,14 @@ public partial class AllBaseTypes : global::Avro.Specific.ISpecificRecord
 		  switch (fieldPos)
 		  {
           case 0: this.StringType = (string)fieldValue; break;
-          case 1: this.CharType = (char)fieldValue; break;
-          case 2: this.ShortType = (short)fieldValue; break;
+          case 1: this.CharType = Convert.ToChar((int)fieldValue); break;
+          case 2: this.ShortType = Convert.ToInt16((int)fieldValue); break;
           case 3: this.IntType = (int)fieldValue; break;
           case 4: this.LongType = (long)fieldValue; break;
           case 5: this.FloatType = (float)fieldValue; break;
           case 6: this.DoubleType = (double)fieldValue; break;
           case 7: this.DecimalType = (decimal)(Avro.AvroDecimal)fieldValue; break;
-          case 8: this.ArrayType = (int[])fieldValue; break;
+          case 8: this.ArrayType = ((IList<Int32>)fieldValue).ToArray(); break;
           case 9: this.ListType = (System.Collections.Generic.List<Avroify.Sample.NestedClass>)fieldValue; break;
           case 10: this.MapType = (System.Collections.Generic.Dictionary<string, Avroify.Sample.NestedClass>)fieldValue; break;
           case 11: this.ComplexType = (Avroify.Sample.NestedClass)fieldValue; break;
