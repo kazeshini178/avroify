@@ -158,7 +158,7 @@ public partial class {details.Name} : global::Avro.Specific.ISpecificRecord
             if (property.Type is IArrayTypeSymbol arrayProp)
             { 
                 getStringBuilder.AppendLine($"this.{property.Name};");
-                setStringBuilder.AppendLine($"((IList<{arrayProp.ElementType.Name}>)fieldValue).ToArray(); break;");
+                setStringBuilder.AppendLine($"((List<{arrayProp.ElementType.Name}>)fieldValue).ToArray(); break;");
             }
             else
             {

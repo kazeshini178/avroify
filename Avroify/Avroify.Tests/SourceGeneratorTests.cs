@@ -418,7 +418,7 @@ public partial class AllBaseTypes : global::Avro.Specific.ISpecificRecord
           case 5: this.FloatType = (float)fieldValue; break;
           case 6: this.DoubleType = (double)fieldValue; break;
           case 7: this.DecimalType = (decimal)(Avro.AvroDecimal)fieldValue; break;
-          case 8: this.ArrayType = ((IList<Int32>)fieldValue).ToArray(); break;
+          case 8: this.ArrayType = ((List<Int32>)fieldValue).ToArray(); break;
           case 9: this.ListType = (System.Collections.Generic.List<Avroify.Sample.NestedClass>)fieldValue; break;
           case 10: this.MapType = (System.Collections.Generic.Dictionary<string, Avroify.Sample.NestedClass>)fieldValue; break;
           case 11: this.ComplexType = (Avroify.Sample.NestedClass)fieldValue; break;
