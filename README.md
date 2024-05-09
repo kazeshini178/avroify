@@ -1,5 +1,8 @@
 # Avroify
 
+![Build](https://github.com/kazeshini178/avroify/actions/workflows/dotnet-ci.yml/badge.svg)
+![Build](https://github.com/kazeshini178/avroify/actions/workflows/release-cd.yml/badge.svg)
+
 Source Generator that allows you to extend your data models to be used for Avro Serialization and Deserialization. 
 
 Removes the need to run external steps during your development process to add Avro support or even generate classes from a given Schema.
