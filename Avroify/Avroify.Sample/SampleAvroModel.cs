@@ -28,7 +28,7 @@ namespace Avroify.Sample
     public partial class BasicModel
     {
         public int Id { get; set; }
-        // public string Avroname { get; set; }
+        public string Avroname { get; set; }
     }
 }
 

@@ -15,7 +15,7 @@ public partial class AllBaseTypes
     public float FloatType { get; set; }
     public double DoubleType { get; set; }
     public decimal DecimalType { get; set; }
-    public int[] ArrayType  { get; set; }
+    public int[] ArrayType { get; set; }
     public List<string> ListType { get; set; }
     public Dictionary<string, NestedClass> MapType { get; set; }
     public NestedClass ComplexType { get; set; }
@@ -33,7 +33,7 @@ public partial class NestedClass
 
 public enum SimpleEnum
 {
-     Active,
-     Inactive,
-     Deleted
+    Active,
+    Inactive,
+    Deleted
 }
