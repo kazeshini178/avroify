@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avroify.Tests", "Avroify\Av
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avroify.Attributes", "Avroify\Avroify.Attributes\Avroify.Attributes.csproj", "{70EE9A00-B7BF-402C-A549-61B9A3166EB9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avroify.Nuget.Tests", "Avroify\Avroify.Nuget.Tests\Avroify.Nuget.Tests.csproj", "{C64F9C53-E83A-4839-9419-46D040263824}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{808D2768-ED85-410A-BB50-3BD490E9DD83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +34,13 @@ Global
 		{70EE9A00-B7BF-402C-A549-61B9A3166EB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70EE9A00-B7BF-402C-A549-61B9A3166EB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70EE9A00-B7BF-402C-A549-61B9A3166EB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C64F9C53-E83A-4839-9419-46D040263824}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C64F9C53-E83A-4839-9419-46D040263824}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C64F9C53-E83A-4839-9419-46D040263824}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C64F9C53-E83A-4839-9419-46D040263824}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C64F9C53-E83A-4839-9419-46D040263824} = {808D2768-ED85-410A-BB50-3BD490E9DD83}
+		{094084E5-824A-4443-8B07-B98B0FF8F018} = {808D2768-ED85-410A-BB50-3BD490E9DD83}
 	EndGlobalSection
 EndGlobal
