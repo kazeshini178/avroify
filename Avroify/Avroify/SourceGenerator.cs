@@ -105,6 +105,12 @@ public partial class {details.Name} : global::Avro.Specific.ISpecificRecord
 		}}
 	}}
 
+    private AvroDecimal ToScaledAvroDecimal(decimal value, int targetScale = 14)
+    {{
+        var result = Math.Round(value * (decimal)Math.Pow(10, targetScale), targetScale);
+        return new AvroDecimal(new System.Numerics.BigInteger(result), targetScale);
+    }}
+
     public virtual object Get(int fieldPos)
 	{{
 		switch (fieldPos)
@@ -174,7 +180,7 @@ public partial class {details.Name} : global::Avro.Specific.ISpecificRecord
                         setStringBuilder.AppendLine("Convert.ToChar((int)fieldValue); break;");
                         break;
                     case "decimal":
-                        getStringBuilder.AppendLine($"(Avro.AvroDecimal) this.{property.Name};");
+                        getStringBuilder.AppendLine($"(Avro.AvroDecimal) ToScaledAvroDecimal(this.{property.Name});");
                         setStringBuilder.AppendLine($"({typeString})(Avro.AvroDecimal)fieldValue; break;");
                         break;
                     case "dateonly" or "system.dateonly":

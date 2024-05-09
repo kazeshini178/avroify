@@ -76,6 +76,12 @@ public partial class SampleAvroModel : global::Avro.Specific.ISpecificRecord
 		}
 	}
 
+    private AvroDecimal ToScaledAvroDecimal(decimal value, int targetScale = 14)
+    {
+        var result = Math.Round(value * (decimal)Math.Pow(10, targetScale), targetScale);
+        return new AvroDecimal(new System.Numerics.BigInteger(result), targetScale);
+    }
+
     public virtual object Get(int fieldPos)
 	{
 		switch (fieldPos)
@@ -382,6 +388,12 @@ public partial class AllBaseTypes : global::Avro.Specific.ISpecificRecord
 		}
 	}
 
+    private AvroDecimal ToScaledAvroDecimal(decimal value, int targetScale = 14)
+    {
+        var result = Math.Round(value * (decimal)Math.Pow(10, targetScale), targetScale);
+        return new AvroDecimal(new System.Numerics.BigInteger(result), targetScale);
+    }
+
   public virtual object Get(int fieldPos)
 	{
 		  switch (fieldPos)
@@ -393,7 +405,7 @@ public partial class AllBaseTypes : global::Avro.Specific.ISpecificRecord
           case 4: return this.LongType;
           case 5: return this.FloatType;
           case 6: return this.DoubleType;
-          case 7: return (Avro.AvroDecimal) this.DecimalType;
+          case 7: return (Avro.AvroDecimal) ToScaledAvroDecimal(this.DecimalType);
           case 8: return this.ArrayType;
           case 9: return this.ListType;
           case 10: return this.MapType;
