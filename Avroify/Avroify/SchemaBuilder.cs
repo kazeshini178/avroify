@@ -165,8 +165,7 @@ internal class SchemaBuilder
         return symbolType switch
         {
             "String" => (PrimitiveSchema.Create(Schema.Type.String), null),
-            "Byte" => (PrimitiveSchema.Create(Schema.Type.Bytes), null),
-            "Char" or "Int16" or "Int32" => (PrimitiveSchema.Create(Schema.Type.Int), null),
+            "Byte" or "Char" or "Int16" or "Int32" => (PrimitiveSchema.Create(Schema.Type.Int), null),
             "Int64" => (PrimitiveSchema.Create(Schema.Type.Long), null),
             "Boolean" => (PrimitiveSchema.Create(Schema.Type.Boolean), null),
             "Single" => (PrimitiveSchema.Create(Schema.Type.Float), null),

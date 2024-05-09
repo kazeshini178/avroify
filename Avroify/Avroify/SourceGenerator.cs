@@ -171,6 +171,10 @@ public partial class {details.Name} : global::Avro.Specific.ISpecificRecord
                 var typeString = property.Type.ToDisplayString();
                 switch (typeString.ToLower())
                 {
+                    case "byte":
+                        getStringBuilder.AppendLine($"(int) this.{property.Name};");
+                        setStringBuilder.AppendLine("Convert.ToByte((int)fieldValue); break;");
+                        break;
                     case "short":
                         getStringBuilder.AppendLine($"(int) this.{property.Name};");
                         setStringBuilder.AppendLine("Convert.ToInt16((int)fieldValue); break;");
