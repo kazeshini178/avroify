@@ -39,7 +39,7 @@ public class AvroSerializationTests
             .Generate(1)[0];
     }
 
-    [Fact(Skip = "Latest version not released")]
+    [Fact]
     public void Given_A_Avroified_Class_It_Should_Serialize_With_Apache_Avro()
     {
         var memStream = new MemoryStream();
@@ -50,7 +50,7 @@ public class AvroSerializationTests
             .NotThrow("Unable to Serialize from Avro Model");
     }
 
-    [Fact(Skip = "Latest version not released")]
+    [Fact]
     public void Given_A_Serialised_Class_It_Should_Deserialize_With_Apache_Avro()
     {
         var memStream = new MemoryStream();
