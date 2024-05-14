@@ -140,7 +140,6 @@ internal class SchemaBuilder
 
     private (Schema schema, List<DiagnosticInfo>? diagnostics) CreateMapSchema(INamedTypeSymbol mapSymbol)
     {
-        // TODO: Add Diagnostic to check users are using complex map keys
         // Currently unused on Avro map type
         var mapKeySymbol = (INamedTypeSymbol) mapSymbol.TypeArguments[0];
         DiagnosticInfo? keyDiagnostic = null;

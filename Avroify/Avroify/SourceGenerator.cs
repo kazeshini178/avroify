@@ -39,7 +39,7 @@ namespace Avroify
     {
         _isTestContext = isTestContext;
     }
-
+    
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         if (_isTestContext)
@@ -49,7 +49,8 @@ namespace Avroify
                 SourceText.From(AttributeSourceCode, Encoding.UTF8)));
         }
 
-        var attributeGeneration = context.SyntaxProvider.ForAttributeWithMetadataName(
+        var attributeGeneration = context.SyntaxProvider
+            .ForAttributeWithMetadataName(
                 AvroifyAttributeName,
                 (node, _) => node is ClassDeclarationSyntax,
                 CreateAvroDetails
@@ -57,10 +58,11 @@ namespace Avroify
             .Where(c => c is not null)
             .Select((c, _) => c!.Value)
             .WithTrackingName("AvroPartialGenerator");
-
+        
         var generationDiagnostics = attributeGeneration
             .Where(s => s.Diagnostics is not null)
             .SelectMany((s, _) => s.Diagnostics!.Value);
+        
         context.RegisterSourceOutput(generationDiagnostics,
             (productionContext, diagnostics) =>
             {
@@ -162,7 +164,7 @@ public partial class {details.Name} : global::Avro.Specific.ISpecificRecord
                 $"\t\t\tcase {index}: this.{property.Name} = ");
 
             if (property.Type is IArrayTypeSymbol arrayProp)
-            { 
+            {
                 getStringBuilder.AppendLine($"this.{property.Name};");
                 setStringBuilder.AppendLine($"((List<{arrayProp.ElementType.Name}>)fieldValue).ToArray(); break;");
             }
