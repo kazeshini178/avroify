@@ -133,3 +133,4 @@ namespace Avroify.Sample
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
+

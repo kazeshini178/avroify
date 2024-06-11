@@ -27,7 +27,6 @@ internal class SchemaBuilder
         CancellationToken token)
     {
         var diagnostics = new List<DiagnosticInfo>();
-
         var schemaFields = new List<Field>();
 
         for (var index = 0; index < properties.Count; index++)
@@ -48,10 +47,40 @@ internal class SchemaBuilder
             schemaFields.Add(field);
         }
 
+        var schemaNamingInfo = GetNamingInfo(classSymbol);
         return (
-            RecordSchema.Create(classSymbol.Name, schemaFields, classSymbol.ContainingNamespace.ToDisplayString()),
+            RecordSchema.Create(schemaNamingInfo.Name, schemaFields, schemaNamingInfo.Namespace),
             diagnostics
         );
+    }
+
+    internal record SchemaNamingInfo(string Name, string Namespace);
+
+    private SchemaNamingInfo GetNamingInfo(INamedTypeSymbol classSymbol)
+    {
+        var schemaName = classSymbol.Name;
+        var schemaNamespace = classSymbol.ContainingNamespace.ToDisplayString();
+        if (!HasAvroifyAttribute(classSymbol))
+        {
+            return new SchemaNamingInfo(schemaName, schemaNamespace);
+        }
+
+        var avroifyAttributeDetails = classSymbol.GetAttributes()
+            .First(a => a.AttributeClass!.Name == nameof(AvroifyAttribute));
+        foreach (var args in avroifyAttributeDetails.NamedArguments)
+        {
+            switch (args.Key)
+            {
+                case "Name":
+                    schemaName = args.Value.Value!.ToString();
+                    break;
+                case "Namespace":
+                    schemaNamespace = args.Value.Value!.ToString();
+                    break;
+            }
+        }
+
+        return new SchemaNamingInfo(schemaName, schemaNamespace);
     }
 
     private void AddMarkedClassDiagnostics(IPropertySymbol property, List<DiagnosticInfo> diagnostics)
@@ -75,7 +104,7 @@ internal class SchemaBuilder
         }
 
         if (property.Type is not INamedTypeSymbol {IsGenericType: true} namedSymbol) return;
-        
+
         foreach (var typeArgument in namedSymbol.TypeArguments)
         {
             if (IsSupportedBaseType(typeArgument.Name) || HasAvroifyAttribute(typeArgument)) continue;
@@ -147,6 +176,7 @@ internal class SchemaBuilder
         {
             keyDiagnostic = DictionaryKeyDiagnostic.Create(mapKeySymbol);
         }
+
         var mapValueSymbol = (INamedTypeSymbol) mapSymbol.TypeArguments[1];
         var valueType = mapValueSymbol.Name;
         var (schema, diagnostics) = CreateSchemaForType(valueType, mapValueSymbol);
@@ -155,6 +185,7 @@ internal class SchemaBuilder
             diagnostics ??= [];
             diagnostics.Add(keyDiagnostic);
         }
+
         return (MapSchema.CreateMap(schema), diagnostics);
     }
 
