@@ -27,6 +27,8 @@ namespace Avroify
     [AttributeUsage(System.AttributeTargets.Class)]
     public class AvroifyAttribute : Attribute
     {
+        public string? Name { get; set; }
+        public string? Namespace { get; set; }
     }
 }";
 
