@@ -16,7 +16,6 @@ namespace Avroify.Sample
         public string Name { get; set; } 
     }
 }";
-
     [Fact]
     public void Given_NonPartial_Class_Report_Warning_AVROIFY00001()
     {
@@ -60,6 +59,42 @@ namespace Avroify.Sample
         Assert.Single(results.Diagnostics);
         Assert.Contains(results.Diagnostics, d => d.Id == "AVROIFY00002");
         Assert.Contains(results.Diagnostics, d => d.GetMessage() == obj.DiagnosticResultMessage);
+    }
+    
+    private const string NullableEnunClass = @"using Avroify;
+
+namespace Avroify.Sample
+{
+    [Avroify]
+    public partial class SampleAvroModel
+    {
+        public SampleEnum? Enum { get; set; } 
+    }
+    
+    public enum SampleEnum 
+    {
+        Value1,
+        Value2
+    }
+}";
+    [Fact]
+    public void Given_Class_With_A_Nullable_Enum_No_Diaganostics_Reported()
+    {
+        var generator = new SourceGenerator(true);
+
+        var driver = CSharpGeneratorDriver.Create(generator);
+
+        var compilation = CSharpCompilation.Create(nameof(SourceGeneratorTests), new[]
+        {
+            CSharpSyntaxTree.ParseText(NullableEnunClass)
+        }, new[]
+        {
+            // To support 'System.Attribute' inheritance, add reference to 'System.Private.CoreLib'.
+            MetadataReference.CreateFromFile(typeof(object).Assembly.Location)
+        });
+
+        var results = driver.RunGenerators(compilation).GetRunResult();
+        Assert.True(results.Diagnostics.IsEmpty);
     }
     
     private const string IntKeyDictionaryClass = @"using System.Collections.Generic;
@@ -131,7 +166,6 @@ public enum SimpleEnum
     ValueThree
 }
 ";
-    
     [Fact]
     public void Given_Correctly_Setup_Class_Report_Nothing()
     {

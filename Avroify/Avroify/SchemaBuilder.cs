@@ -78,7 +78,9 @@ internal class SchemaBuilder
         
         foreach (var typeArgument in namedSymbol.TypeArguments)
         {
-            if (IsSupportedBaseType(typeArgument.Name) || HasAvroifyAttribute(typeArgument)) continue;
+            if (typeArgument.TypeKind == TypeKind.Enum || 
+                IsSupportedBaseType(typeArgument.Name) ||
+                HasAvroifyAttribute(typeArgument)) continue;
             diagnostics.Add(UnmarkedClassDiagnostic.Create(property, typeArgument.Name));
         }
     }
