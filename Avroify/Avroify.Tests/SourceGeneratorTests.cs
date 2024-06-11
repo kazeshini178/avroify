@@ -53,7 +53,7 @@ public class SourceGeneratorTests
                                        """;
 
     [Fact]
-    public void Given_Classes_Avroify_Attributes_()
+    public void Given_Classes_Avroify_Attributes_All_Class_Generate()
     {
         var generator = new SourceGenerator(true);
 
