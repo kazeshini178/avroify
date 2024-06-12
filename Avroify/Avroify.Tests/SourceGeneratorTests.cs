@@ -53,7 +53,7 @@ public class SourceGeneratorTests
                                        """;
 
     [Fact]
-    public void Given_Classes_Avroify_Attributes_()
+    public void Given_Classes_Avroify_Attributes_All_Class_Generate()
     {
         var generator = new SourceGenerator(true);
 
@@ -77,6 +77,34 @@ public class SourceGeneratorTests
     }
 
     [Theory]
+    [ClassData(typeof(NullReferenceTypeTestCases))]
+    public void Given_Classes_When_Nullable_Context_Enabled(NullableContextOptions option, GenerationTestCase testCase)
+    {
+        var generator = new SourceGenerator(true);
+
+        var driver = CSharpGeneratorDriver.Create(generator);
+
+        var compilation = CSharpCompilation.Create(nameof(SourceGeneratorTests), new[]
+            {
+                CSharpSyntaxTree.ParseText(testCase.ClassDefinition)
+            }, new[]
+            {
+                // To support 'System.Attribute' inheritance, add reference to 'System.Private.CoreLib'.
+                MetadataReference.CreateFromFile(typeof(object).Assembly.Location)
+            },
+            new CSharpCompilationOptions(OutputKind.ConsoleApplication,
+                nullableContextOptions: option));
+
+        var results = driver.RunGenerators(compilation).GetRunResult();
+
+        var generateFileSyntax = results.GeneratedTrees
+            .First(t => t.FilePath.EndsWith("SampleAvroModel.g.cs"));
+
+        Assert.Equal(testCase.GenerationResult, generateFileSyntax.GetText().ToString(),
+            ignoreLineEndingDifferences: true, ignoreWhiteSpaceDifferences: true);
+    }
+
+    [Theory]
     [ClassData(typeof(GenerationTestCases))]
     public void Given_Attribute_Configuration_Correct_Schema_Is_Generated(GenerationTestCase testCase)
     {
@@ -85,13 +113,15 @@ public class SourceGeneratorTests
         var driver = CSharpGeneratorDriver.Create(generator);
 
         var compilation = CSharpCompilation.Create(nameof(SourceGeneratorTests), new[]
-        {
-            CSharpSyntaxTree.ParseText(testCase.ClassDefinition)
-        }, new[]
-        {
-            // To support 'System.Attribute' inheritance, add reference to 'System.Private.CoreLib'.
-            MetadataReference.CreateFromFile(typeof(object).Assembly.Location)
-        });
+            {
+                CSharpSyntaxTree.ParseText(testCase.ClassDefinition)
+            }, new[]
+            {
+                // To support 'System.Attribute' inheritance, add reference to 'System.Private.CoreLib'.
+                MetadataReference.CreateFromFile(typeof(object).Assembly.Location)
+            },
+            new CSharpCompilationOptions(OutputKind.ConsoleApplication,
+                nullableContextOptions: NullableContextOptions.Enable));
 
         var results = driver.RunGenerators(compilation).GetRunResult();
 
@@ -416,13 +446,15 @@ public class SourceGeneratorTests
         var driver = CSharpGeneratorDriver.Create(generator);
 
         var compilation = CSharpCompilation.Create(nameof(SourceGeneratorTests), new[]
-        {
-            CSharpSyntaxTree.ParseText(CSharpClassAllBaseType)
-        }, new[]
-        {
-            // To support 'System.Attribute' inheritance, add reference to 'System.Private.CoreLib'.
-            MetadataReference.CreateFromFile(typeof(object).Assembly.Location)
-        });
+            {
+                CSharpSyntaxTree.ParseText(CSharpClassAllBaseType)
+            }, new[]
+            {
+                // To support 'System.Attribute' inheritance, add reference to 'System.Private.CoreLib'.
+                MetadataReference.CreateFromFile(typeof(object).Assembly.Location)
+            },
+            new CSharpCompilationOptions(OutputKind.ConsoleApplication,
+                nullableContextOptions: NullableContextOptions.Enable));
 
         var results = driver.RunGenerators(compilation).GetRunResult();
 
