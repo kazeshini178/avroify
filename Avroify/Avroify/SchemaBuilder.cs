@@ -18,13 +18,19 @@ internal class SchemaBuilder
         "DateOnly", "TimeOnly", "List", "Dictionary", "Nullable"
     ];
 
+    private bool _explicitNullableReferenceTypes { get; set; }
+
     internal SchemaBuilder()
     {
     }
 
+    internal void SetNullableEnabled(bool nullableContextEnabled)
+    {
+        _explicitNullableReferenceTypes = nullableContextEnabled;
+    }
+
     internal (Schema schema, List<DiagnosticInfo>? diagnostics) GenerateSchemaForClass(INamedTypeSymbol classSymbol,
-        List<IPropertySymbol> properties,
-        CancellationToken token)
+        List<IPropertySymbol> properties, CancellationToken token)
     {
         var diagnostics = new List<DiagnosticInfo>();
         var schemaFields = new List<Field>();
@@ -107,7 +113,7 @@ internal class SchemaBuilder
 
         foreach (var typeArgument in namedSymbol.TypeArguments)
         {
-            if (typeArgument.TypeKind == TypeKind.Enum || 
+            if (typeArgument.TypeKind == TypeKind.Enum ||
                 IsSupportedBaseType(typeArgument.Name) ||
                 HasAvroifyAttribute(typeArgument)) continue;
             diagnostics.Add(UnmarkedClassDiagnostic.Create(property, typeArgument.Name));
@@ -166,7 +172,14 @@ internal class SchemaBuilder
         var listSymbol = (INamedTypeSymbol) typeSymbol.TypeArguments[0];
         var listType = listSymbol.Name;
         var (schema, diagnostics) = CreateSchemaForType(listType, listSymbol);
-        return (ArraySchema.Create(schema), diagnostics);
+        Schema resultSchema =
+            _explicitNullableReferenceTypes && typeSymbol.NullableAnnotation != NullableAnnotation.Annotated
+                ? ArraySchema.Create(schema)
+                : UnionSchema.Create([
+                    PrimitiveSchema.Create(Schema.Type.Null),
+                    ArraySchema.Create(schema)
+                ]);
+        return (resultSchema, diagnostics);
     }
 
     private (Schema schema, List<DiagnosticInfo>? diagnostics) CreateMapSchema(INamedTypeSymbol mapSymbol)
@@ -188,7 +201,14 @@ internal class SchemaBuilder
             diagnostics.Add(keyDiagnostic);
         }
 
-        return (MapSchema.CreateMap(schema), diagnostics);
+        Schema resultSchema =
+            _explicitNullableReferenceTypes && mapSymbol.NullableAnnotation != NullableAnnotation.Annotated
+                ? MapSchema.CreateMap(schema)
+                : UnionSchema.Create([
+                    PrimitiveSchema.Create(Schema.Type.Null),
+                    MapSchema.CreateMap(schema)
+                ]);
+        return (resultSchema, diagnostics);
     }
 
     private (Schema schema, List<DiagnosticInfo>? diagnostics) CreateSchemaForType(string symbolType,
@@ -196,7 +216,13 @@ internal class SchemaBuilder
     {
         return symbolType switch
         {
-            "String" => (PrimitiveSchema.Create(Schema.Type.String), null),
+            "String" => (
+                _explicitNullableReferenceTypes && symbol.NullableAnnotation != NullableAnnotation.Annotated
+                    ? PrimitiveSchema.Create(Schema.Type.String)
+                    : UnionSchema.Create([
+                        PrimitiveSchema.Create(Schema.Type.Null),
+                        PrimitiveSchema.Create(Schema.Type.String)
+                    ]), null),
             "Byte" or "Char" or "Int16" or "Int32" => (PrimitiveSchema.Create(Schema.Type.Int), null),
             "Int64" => (PrimitiveSchema.Create(Schema.Type.Long), null),
             "Boolean" => (PrimitiveSchema.Create(Schema.Type.Boolean), null),
@@ -210,8 +236,20 @@ internal class SchemaBuilder
             "List" => CreateListSchema(symbol),
             "Dictionary" => CreateMapSchema(symbol),
             "Nullable" => CreateNullUnionSchema(symbol),
-            _ => GenerateSchemaForClass(symbol, Util.GetSettableProperties(symbol), default)
+            _ => CreateClassSchema(symbol)
         };
+    }
+
+    private (Schema schema, List<DiagnosticInfo>? diagnostics) CreateClassSchema(INamedTypeSymbol symbol)
+    {
+        var (schema, diagnostics) = GenerateSchemaForClass(symbol, Util.GetSettableProperties(symbol), default);
+        return (_explicitNullableReferenceTypes && symbol.NullableAnnotation != NullableAnnotation.Annotated
+                ? schema
+                : UnionSchema.Create([
+                    PrimitiveSchema.Create(Schema.Type.Null),
+                    schema
+                ])
+            , diagnostics);
     }
 
     private (Schema schema, List<DiagnosticInfo>? diagnostics) CreateNullUnionSchema(INamedTypeSymbol symbol)

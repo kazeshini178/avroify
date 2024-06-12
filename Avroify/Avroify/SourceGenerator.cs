@@ -207,6 +207,9 @@ public partial class {details.Name} : global::Avro.Specific.ISpecificRecord
             }
         }
 
+        var nullableContextEnabled = ctx.SemanticModel.Compilation.Options.NullableContextOptions !=
+                                     NullableContextOptions.Disable;
+        _schemaBuilder.SetNullableEnabled(nullableContextEnabled);
         var (schema, schemaDiagnostics) = _schemaBuilder.GenerateSchemaForClass(classSymbol, properties, token);
         if (schemaDiagnostics is not null)
         {
