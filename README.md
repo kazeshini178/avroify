@@ -19,7 +19,45 @@ Currently supports extending existing classes as well as generating classes for 
 dotnet add package Avroify 
 ```
 
-Once installed you can either use `avcs` schema files or marking classes to avrofication.
+Once installed you can either use `avcs` schema files or annotating classes for avrofication.
+> **NOTE**: Application will need to reference `Apache.Avro` 
+
+## Features
+
+- Simplifies creation of Schemas for your classes
+- Generate usable classes from `avcs` files
+- Respects Nullable Annotation settings
+- Override namings to help with refactorings
+
+### .Net to Avro Mappings
+
+| .NET Type | Avro Type |
+| --------- | --------- |
+| Boolean | Boolean |
+| Char | Int |
+| String | String |
+| Byte | Int |
+| Short | Int |
+| Int | Int |
+| Long | Long |
+| Single | Float |
+| Double | Double |
+| Decimal | AvroDecimal* |
+| DateTime | long (Logical Type: timestamp-millis) |
+| DateOnly | int (Logical Type: date) |
+| TimeOnly | int (Logical Type: time-millis) |
+| List | Array |
+| Array | Array |
+| Dictionary | Map** |
+| Enum | Enum |
+| Class | Record |
+
+
+\* `AvroDecimal`s are represented as bytes types and logical types of decimal with a precision of 29 and scale of 14
+
+**  `Map`s expect the key to be a string type, currently there is not way to change the key type on the schema
+
+## Examples
 
 ### AVCS Files
 
