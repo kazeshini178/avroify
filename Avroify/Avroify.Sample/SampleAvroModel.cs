@@ -9,9 +9,9 @@ namespace Avroify.Sample
     [Avroify]
     public partial class SampleAvroModel
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public FontSize FontSize { get; set; } = FontSize.Large;
-        public List<BasicModel> Basic { get; set; }
+        public List<BasicModel>? Basic { get; set; }
         public DateTime DateCreated { get; set; }
 
         public string ColoursFlattened
