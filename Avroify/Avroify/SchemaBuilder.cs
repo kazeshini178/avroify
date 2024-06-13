@@ -137,8 +137,8 @@ internal class SchemaBuilder
                 JValue.CreateString(member.Name.ToString()),
             // {Initializer.Value: LiteralExpressionSyntax literal} =>
             //     JValue.CreateString(literal.GetText().ToString().Trim()),
-            {Initializer.Value: LiteralExpressionSyntax literal} =>
-                JValue.CreateString(literal.Token.ValueText),
+            {Initializer.Value: LiteralExpressionSyntax literal} => 
+                new JValue(literal.Token.Value),
             _ => null
         };
     }

@@ -77,7 +77,7 @@ public class GenerationTestCases : IEnumerable<object[]>
                                        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Avroify", "{{{{Constants.Version}}}}")]
                                        public partial class SampleAvroModel : global::Avro.Specific.ISpecificRecord
                                        {
-                                       	public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"SampleAvroModel\",\"namespace\":\"Avroify.Sample\",\"fields\":[{\"name\":\"Name\",\"type\":\"string\"},{\"name\":\"FontSize\",\"default\":\"Large\",\"type\":{\"type\":\"enum\",\"name\":\"FontSizeEnum\",\"namespace\":\"Avroify.Sample.Enums\",\"symbols\":[\"Small\",\"Medium\",\"Large\"]}},{\"name\":\"Basic\",\"type\":{\"type\":\"record\",\"name\":\"BasicModel\",\"namespace\":\"Avroify.Sample\",\"fields\":[{\"name\":\"Id\",\"type\":\"int\"},{\"name\":\"Avroname\",\"default\":\"Bob\",\"type\":\"string\"},{\"name\":\"IsDeleted\",\"type\":\"boolean\"}]}},{\"name\":\"DateCreated\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"BasicList\",\"type\":{\"type\":\"array\",\"items\":\"BasicModel\"}},{\"name\":\"Colours\",\"type\":{\"type\":\"array\",\"items\":\"string\"}},{\"name\":\"Age\",\"default\":\"18\",\"type\":\"int\"},{\"name\":\"Money\",\"type\":[\"null\",\"int\"]}]}");
+                                       	public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"SampleAvroModel\",\"namespace\":\"Avroify.Sample\",\"fields\":[{\"name\":\"Name\",\"type\":\"string\"},{\"name\":\"FontSize\",\"default\":\"Large\",\"type\":{\"type\":\"enum\",\"name\":\"FontSizeEnum\",\"namespace\":\"Avroify.Sample.Enums\",\"symbols\":[\"Small\",\"Medium\",\"Large\"]}},{\"name\":\"Basic\",\"type\":{\"type\":\"record\",\"name\":\"BasicModel\",\"namespace\":\"Avroify.Sample\",\"fields\":[{\"name\":\"Id\",\"type\":\"int\"},{\"name\":\"Avroname\",\"default\":\"Bob\",\"type\":\"string\"},{\"name\":\"IsDeleted\",\"type\":\"boolean\"}]}},{\"name\":\"DateCreated\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"BasicList\",\"type\":{\"type\":\"array\",\"items\":\"BasicModel\"}},{\"name\":\"Colours\",\"type\":{\"type\":\"array\",\"items\":\"string\"}},{\"name\":\"Age\",\"default\":18,\"type\":\"int\"},{\"name\":\"Money\",\"type\":[\"null\",\"int\"]}]}");
                                            public virtual global::Avro.Schema Schema
                                        	{
                                        		get
@@ -170,7 +170,7 @@ public class GenerationTestCases : IEnumerable<object[]>
                                        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Avroify", "{{{{Constants.Version}}}}")]
                                        public partial class SampleAvroModel : global::Avro.Specific.ISpecificRecord
                                        {
-                                           public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"TestModel\",\"namespace\":\"Avroify.Testing\",\"fields\":[{\"name\":\"Name\",\"type\":\"string\"},{\"name\":\"DateCreated\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"Age\",\"default\":\"18\",\"type\":\"int\"},{\"name\":\"Money\",\"type\":[\"null\",\"int\"]}]}");
+                                           public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"TestModel\",\"namespace\":\"Avroify.Testing\",\"fields\":[{\"name\":\"Name\",\"type\":\"string\"},{\"name\":\"DateCreated\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"Age\",\"default\":18,\"type\":\"int\"},{\"name\":\"Money\",\"type\":[\"null\",\"int\"]}]}");
                                            public virtual global::Avro.Schema Schema
                                            {
                                                get
@@ -255,7 +255,7 @@ public class GenerationTestCases : IEnumerable<object[]>
                                        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Avroify", "{{{{Constants.Version}}}}")]
                                        public partial class SampleAvroModel : global::Avro.Specific.ISpecificRecord
                                        {
-                                           public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"TestModel\",\"namespace\":\"Avroify.Sample\",\"fields\":[{\"name\":\"Name\",\"type\":\"string\"},{\"name\":\"DateCreated\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"Age\",\"default\":\"18\",\"type\":\"int\"},{\"name\":\"Money\",\"type\":[\"null\",\"int\"]}]}");
+                                           public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"TestModel\",\"namespace\":\"Avroify.Sample\",\"fields\":[{\"name\":\"Name\",\"type\":\"string\"},{\"name\":\"DateCreated\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"Age\",\"default\":18,\"type\":\"int\"},{\"name\":\"Money\",\"type\":[\"null\",\"int\"]}]}");
                                            public virtual global::Avro.Schema Schema
                                            {
                                                get
@@ -340,7 +340,7 @@ public class GenerationTestCases : IEnumerable<object[]>
                                        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Avroify", "{{{{Constants.Version}}}}")]
                                        public partial class SampleAvroModel : global::Avro.Specific.ISpecificRecord
                                        {
-                                           public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"SampleAvroModel\",\"namespace\":\"Avroify.Testing\",\"fields\":[{\"name\":\"Name\",\"type\":\"string\"},{\"name\":\"DateCreated\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"Age\",\"default\":\"18\",\"type\":\"int\"},{\"name\":\"Money\",\"type\":[\"null\",\"int\"]}]}");
+                                           public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"SampleAvroModel\",\"namespace\":\"Avroify.Testing\",\"fields\":[{\"name\":\"Name\",\"type\":\"string\"},{\"name\":\"DateCreated\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"Age\",\"default\":18,\"type\":\"int\"},{\"name\":\"Money\",\"type\":[\"null\",\"int\"]}]}");
                                            public virtual global::Avro.Schema Schema
                                            {
                                                get
