@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using Xunit;
 
 namespace Avroify.Tests;
 
@@ -9,14 +8,13 @@ public class DiagnosticTestCase
     public string DiagnosticResultMessage { get; init; } = null!;
 }
 
-public class UnmarkedPropertyClassTestCases : IEnumerable<object[]>
+public class UnmarkedPropertyClassTestCases : TheoryData<DiagnosticTestCase>
 {
-    private readonly List<object[]> _testCases =
-    [
-        [
-            new DiagnosticTestCase()
-            {
-                ClassDefinition = @"using Avroify;
+    public UnmarkedPropertyClassTestCases()
+    {
+        Add(new DiagnosticTestCase()
+        {
+            ClassDefinition = @"using Avroify;
 
 namespace Avroify.Sample
 {
@@ -31,14 +29,12 @@ namespace Avroify.Sample
         public string SubProp { get; set; } 
     }
 }",
-                DiagnosticResultMessage =
-                    "Class SubAvroModel referenced by property SubModel does not support Avro Serialization/Deserialization."
-            }
-        ],
-        [
-            new DiagnosticTestCase()
-            {
-                ClassDefinition = @"using Avroify;
+            DiagnosticResultMessage =
+                "Class SubAvroModel referenced by property SubModel does not support Avro Serialization/Deserialization."
+        });
+        Add(new DiagnosticTestCase()
+        {
+            ClassDefinition = @"using Avroify;
 
 namespace Avroify.Sample
 {
@@ -54,14 +50,12 @@ namespace Avroify.Sample
         public string SubProp { get; set; } 
     }
 }",
-                DiagnosticResultMessage =
-                    "Class SubAvroModel referenced by property NullableSubModel does not support Avro Serialization/Deserialization."
-            }
-        ],
-        [
-            new DiagnosticTestCase()
-            {
-                ClassDefinition = @"using Avroify;
+            DiagnosticResultMessage =
+                "Class SubAvroModel referenced by property NullableSubModel does not support Avro Serialization/Deserialization."
+        });
+        Add(new DiagnosticTestCase()
+        {
+            ClassDefinition = @"using Avroify;
 
 namespace Avroify.Sample
 {
@@ -77,14 +71,12 @@ namespace Avroify.Sample
         public string SubProp { get; set; } 
     }
 }",
-                DiagnosticResultMessage =
-                    "Class SubAvroModel referenced by property ListOfSubModel does not support Avro Serialization/Deserialization."
-            }
-        ],
-        [
-            new DiagnosticTestCase()
-            {
-                ClassDefinition = @"using Avroify;
+            DiagnosticResultMessage =
+                "Class SubAvroModel referenced by property ListOfSubModel does not support Avro Serialization/Deserialization."
+        });
+        Add(new DiagnosticTestCase()
+        {
+            ClassDefinition = @"using Avroify;
 
 namespace Avroify.Sample
 {
@@ -100,14 +92,12 @@ namespace Avroify.Sample
         public string SubProp { get; set; } 
     }
 }",
-                DiagnosticResultMessage =
-                    "Class SubAvroModel referenced by property DictOfSubModel does not support Avro Serialization/Deserialization."
-            }
-        ],
-        [
-            new DiagnosticTestCase()
-            {
-                ClassDefinition = @"using Avroify;
+            DiagnosticResultMessage =
+                "Class SubAvroModel referenced by property DictOfSubModel does not support Avro Serialization/Deserialization."
+        });
+        Add(new DiagnosticTestCase()
+        {
+            ClassDefinition = @"using Avroify;
 
 namespace Avroify.Sample
 {
@@ -123,14 +113,8 @@ namespace Avroify.Sample
         public string SubProp { get; set; } 
     }
 }",
-                DiagnosticResultMessage =
-                    "Class SubAvroModel referenced by property ArrayOfSubModel does not support Avro Serialization/Deserialization."
-            }
-        ]
-    ];
-
-    public IEnumerator<object[]> GetEnumerator() => _testCases.GetEnumerator();
-
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+            DiagnosticResultMessage =
+                "Class SubAvroModel referenced by property ArrayOfSubModel does not support Avro Serialization/Deserialization."
+        });
+    }
 }
-
