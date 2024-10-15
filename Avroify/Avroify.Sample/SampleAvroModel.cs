@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using Avroify.Sample.Models;
 
 namespace Avroify.Sample
 {
